@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const Signin = () => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const [errorMessage, setErrorMessage] = useState()
   
   const handleChange = (e) => {
     switch (e.target.id) {
@@ -30,15 +31,46 @@ const Signin = () => {
     })
   };
   
-  const signinRequest = () => {
-    fetch(requestUrl, requestOptions)
-    .then(response => response.json())
-    .then(responseJSON => console.log(responseJSON))
+  const defineErrorMessage = async (response) => {
+    const message = await response.json()
+    const m = await message.ErrorMessageJP
+    setErrorMessage(m)
+    console.log(errorMessage)
+  }
+  
+  const signinRequest =  async () => {
+    try {
+      const response = await fetch(requestUrl, requestOptions)
+      console.log(response.status)
+      switch (response.status) {
+        case 200:
+          const responseJSON = await response.json()
+          console.log(responseJSON.token)
+          break
+        case 400:
+          defineErrorMessage(response)
+          break
+        case 401:
+          defineErrorMessage(response)
+          break
+        case 403:
+          defineErrorMessage(response)
+          break
+        case 500:
+          defineErrorMessage(response)
+          break
+        default:
+          break
+      }
+    } catch(err) {
+      // ネット接続がない時？
+      console.log(err)
+    }
   }
   
   return (
     <div>
-      <h1>ログイン</h1>
+      <h1>サインイン</h1>
       <p>
         メールアドレス:
         <input 
@@ -57,8 +89,8 @@ const Signin = () => {
           onChange={handleChange}
         />
       </p>
-      <button onClick={signinRequest}>登録</button>
-      <p><Link to="/signup">ログイン</Link></p>
+      <button onClick={signinRequest}>サインイン</button>
+      <p><Link to="/signup">登録はこちら</Link></p>
     </div>
   )
 }
