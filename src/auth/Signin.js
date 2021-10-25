@@ -2,6 +2,20 @@ import * as React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+// export const handleChange = (setEmail, setPassword, e) => {
+//   switch (e.target.id) {
+//     case 'email':
+//       setEmail(e.target.value)
+//       break
+//     case 'password':
+//       setPassword(e.target.value)
+//       break
+//     default:
+//       break
+//   }
+// }
+
+
 const Signin = () => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
@@ -78,6 +92,7 @@ const Signin = () => {
           type="text" 
           value={email}
           onChange={handleChange}
+          // onChange={(e) => handleChange(setEmail, setPassword, e)}
         />
       </p>
       <p>
@@ -87,6 +102,7 @@ const Signin = () => {
           type="text" 
           value={password}
           onChange={handleChange}
+          // onChange={(e) => handleChange(setEmail, setPassword, e)}
         />
       </p>
       <button onClick={signinRequest}>サインイン</button>
