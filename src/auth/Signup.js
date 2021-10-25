@@ -1,12 +1,15 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+
+// import { handleChange } from "./Signin";
 
 const Signup = () => {
   const [name, setName] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-  const [isModalHidden, setIsModalHidden] = useState(false)
+  const [errorMessage, setErrorMessage] = useState()
+  // const [isModalHidden, setIsModalHidden] = useState(false)
   
   const handleChange = (e) => {
     switch (e.target.id) {
@@ -36,13 +39,41 @@ const Signup = () => {
     })
   };
   
-  const signupRequest = () => {
-    // useEffect(async() => {
-      
-    // },[isModalHidden])
-    fetch(requestUrl, requestOptions)
-    .then(response => response.json())
-    .then(responseJSON => console.log(responseJSON))
+  const defineErrorMessage = async (response) => {
+    const message = await response.json()
+    const m = await message.ErrorMessageJP
+    setErrorMessage(m)
+    console.log(errorMessage)
+  }
+  
+  const signupRequest = async () => {
+    try {
+      const response = await fetch(requestUrl, requestOptions)
+      console.log(response.status)
+      switch (response.status) {
+        case 200:
+          const responseJSON = await response.json()
+          console.log(responseJSON.token)
+          break
+        case 400:
+          defineErrorMessage(response)
+          break
+        case 401:
+          defineErrorMessage(response)
+          break
+        case 403:
+          defineErrorMessage(response)
+          break
+        case 500:
+          defineErrorMessage(response)
+          break
+        default:
+          break
+      }
+    } catch(err) {
+      // ネット接続がない時？
+      console.log(err)
+    }
   }
   
   

@@ -15,6 +15,13 @@ import { Link } from "react-router-dom";
 //   }
 // }
 
+// export const defineErrorMessage = async (response) => {
+//   const message = await response.json()
+//   const m = await message.ErrorMessageJP
+//   setErrorMessage(m)
+//   console.log(errorMessage)
+// }
+
 
 const Signin = () => {
   const [email, setEmail] = useState()
