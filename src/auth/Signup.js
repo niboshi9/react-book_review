@@ -1,43 +1,22 @@
 import * as React from "react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+
+import ShowErrorMessage from "./ShowErrorMessage";
 
 // import { handleChange } from "./Signin";
 
 const Signup = () => {
-  const [name, setName] = useState()
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-  const [errorMessage, setErrorMessage] = useState()
-  // const [isModalHidden, setIsModalHidden] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   
-  const handleChange = (e) => {
-    switch (e.target.id) {
-      case 'name':
-        setName(e.target.value)
-        break
-      case 'email':
-        setEmail(e.target.value)
-        break
-      case 'password':
-        setPassword(e.target.value)
-        break
-      default:
-        break
-    }
+  const { register, handleSubmit, formState: { errors }} = useForm()
+  const onSubmit = (data) => {
+    signupRequest(data)
+    console.log(data.email)
   }
   
   const requestUrl = "https://api-for-missions-and-railways.herokuapp.com/users"
-  
-  const requestOptions = {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      "name": `${name}`,
-      "email": `${email}`,
-      "password": `${password}`
-    })
-  };
   
   const defineErrorMessage = async (response) => {
     const message = await response.json()
@@ -46,7 +25,17 @@ const Signup = () => {
     console.log(errorMessage)
   }
   
-  const signupRequest = async () => {
+  const signupRequest = async (data) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        "name": `${data.name}`,
+        "email": `${data.email}`,
+        "password": `${data.password}`
+      })
+    };
+    
     try {
       const response = await fetch(requestUrl, requestOptions)
       console.log(response.status)
@@ -78,36 +67,42 @@ const Signup = () => {
   
   
   return (
-    <div>
+    <div>      
       <h1>サインアップ</h1>
-      <p>
-        名前:
-        <input 
-          id="name"
-          type="text" 
-          value={name}
-          onChange={handleChange}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <p>
+          <label>名前:
+          <input 
+            id="name"
+            type="text" 
+            {...register("name", {required: true})}
           />
-      </p>
-      <p>
-        メールアドレス:
-        <input 
-          id="email"
-          type="text" 
-          value={email}
-          onChange={handleChange}
-        />
-      </p>
-      <p>
-        パスワード:
-        <input 
-          id="password"
-          type="text" 
-          value={password}
-          onChange={handleChange}
-        />
-      </p>
-      <button onClick={signupRequest}>登録</button>
+          {errors.name && <div className="error">名前を入力してください</div>}
+          </label>
+        </p>
+        <p>
+          <label>メールアドレス:
+          <input 
+            id="email"
+            type="text" 
+            {...register("email", {required: true})}
+          />
+          {errors.email && <div className="error">メールアドレスを入力してください</div>}
+          </label>
+        </p>
+        <p>
+          <label>パスワード:
+          <input 
+            id="password"
+            type="text" 
+            {...register("password", {required: true})}
+          />
+          {errors.password && <div className="error">パスワードを入力してください</div>}
+          </label>
+        </p>
+        <ShowErrorMessage message={errorMessage}/>
+        <input type="submit" value="登録" />
+      </form>
       <p><Link to="/login">ログインはこちら</Link></p>
     </div>
   )

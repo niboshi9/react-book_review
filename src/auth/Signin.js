@@ -1,65 +1,39 @@
 import * as React from "react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-// export const handleChange = (setEmail, setPassword, e) => {
-//   switch (e.target.id) {
-//     case 'email':
-//       setEmail(e.target.value)
-//       break
-//     case 'password':
-//       setPassword(e.target.value)
-//       break
-//     default:
-//       break
-//   }
-// }
-
-// export const defineErrorMessage = async (response) => {
-//   const message = await response.json()
-//   const m = await message.ErrorMessageJP
-//   setErrorMessage(m)
-//   console.log(errorMessage)
-// }
+import ShowErrorMessage from "./ShowErrorMessage";
 
 
 const Signin = () => {
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-  const [errorMessage, setErrorMessage] = useState()
+  const [errorMessage, setErrorMessage] = useState('')
   
-  const handleChange = (e) => {
-    switch (e.target.id) {
-      case 'email':
-        setEmail(e.target.value)
-        break
-      case 'password':
-        setPassword(e.target.value)
-        break
-      default:
-        break
-    }
+  const { register, handleSubmit, formState: { errors }} = useForm()
+  const onSubmit = (data) => {
+    signinRequest(data)
   }
   
   const requestUrl = "https://api-for-missions-and-railways.herokuapp.com/signin"
   
-  const requestOptions = {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      "email": `${email}`,
-      "password": `${password}`
-    })
-  };
-  
   const defineErrorMessage = async (response) => {
+    setErrorMessage('')
     const message = await response.json()
     const m = await message.ErrorMessageJP
-    setErrorMessage(m)
-    console.log(errorMessage)
+    setErrorMessage(await m)
+    // console.log(errorMessage) 待ってくれないから最初undefinedになる。
   }
   
-  const signinRequest =  async () => {
+  const signinRequest =  async (data) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        "email": `${data.email}`,
+        "password": `${data.password}`
+      })
+    };
+    
     try {
       const response = await fetch(requestUrl, requestOptions)
       console.log(response.status)
@@ -92,27 +66,31 @@ const Signin = () => {
   return (
     <div>
       <h1>サインイン</h1>
-      <p>
-        メールアドレス:
-        <input 
-          id="email"
-          type="text" 
-          value={email}
-          onChange={handleChange}
-          // onChange={(e) => handleChange(setEmail, setPassword, e)}
-        />
-      </p>
-      <p>
-        パスワード:
-        <input 
-          id="password"
-          type="text" 
-          value={password}
-          onChange={handleChange}
-          // onChange={(e) => handleChange(setEmail, setPassword, e)}
-        />
-      </p>
-      <button onClick={signinRequest}>サインイン</button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <p>
+          <label>メールアドレス:
+          <input 
+            id="email"
+            type="text"
+            {...register("email", {required: true})}
+          />
+          {errors.email && <div className="error">メールアドレスを入力してください</div>}
+          </label>
+        </p>
+        <p>
+          <label>パスワード:
+          <input 
+            id="password"
+            type="text" 
+            {...register("password", {required: true})}
+          />
+          {errors.password && <div className="error">パスワードを入力してください</div>}
+          </label>
+        </p>
+        <ShowErrorMessage message={errorMessage}/>
+        {/* <button onClick={signinRequest}>サインイン</button> */}
+        <input type="submit" value="サインイン" />
+      </form>
       <p><Link to="/signup">登録はこちら</Link></p>
     </div>
   )
