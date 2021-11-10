@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import ShowErrorMessage from "./ShowErrorMessage";
 
 
-const Signin = () => {
+const Signin = () => {  
   const [errorMessage, setErrorMessage] = useState('')
   
   const { register, handleSubmit, formState: { errors }} = useForm()
@@ -40,7 +40,11 @@ const Signin = () => {
       switch (response.status) {
         case 200:
           const responseJSON = await response.json()
-          console.log(responseJSON.token)
+          localStorage.setItem("token", responseJSON.token)
+          // const token = localStorage.getItem("token")
+          // console.log(token)
+          // console.log(responseJSON.token)
+          localStorage.setItem("isSignin", "true")
           break
         case 400:
           defineErrorMessage(response)
@@ -88,7 +92,6 @@ const Signin = () => {
           </label>
         </p>
         <ShowErrorMessage message={errorMessage}/>
-        {/* <button onClick={signinRequest}>サインイン</button> */}
         <input type="submit" value="サインイン" />
       </form>
       <p><Link to="/signup">登録はこちら</Link></p>

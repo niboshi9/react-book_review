@@ -1,9 +1,19 @@
 import * as React from "react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 import ShowErrorMessage from "./ShowErrorMessage";
+
+
+import { TextArea } from "./TextArea";
+import {
+  Form,
+  Row,
+  Col,
+  Button,
+  ButtonToolbar
+} from 'react-bootstrap';
 
 // import { handleChange } from "./Signin";
 
@@ -13,7 +23,6 @@ const Signup = () => {
   const { register, handleSubmit, formState: { errors }} = useForm()
   const onSubmit = (data) => {
     signupRequest(data)
-    console.log(data.email)
   }
   
   const requestUrl = "https://api-for-missions-and-railways.herokuapp.com/users"
@@ -42,7 +51,11 @@ const Signup = () => {
       switch (response.status) {
         case 200:
           const responseJSON = await response.json()
-          console.log(responseJSON.token)
+          localStorage.setItem("token", responseJSON.token)
+          const token = localStorage.getItem("token")
+          // console.log(token)
+          // console.log(responseJSON.token)
+          localStorage.setItem("isSignin", "true")
           break
         case 400:
           defineErrorMessage(response)
@@ -67,6 +80,55 @@ const Signup = () => {
   
   
   return (
+    // <div>
+    //   <h1>サインアップ</h1>
+    //   <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+    //     <Form.Group as={Row} controlId="name">
+    //       <Form.Label>名前</Form.Label>
+    //       <Form.Control
+    //         type="text"
+    //         isInvalid={errors.name}
+    //         {...register("name", { required: true})}
+    //       />
+    //       {
+    //         errors.name &&
+    //         <Form.Control.Feedback type="invalid">
+    //           名前を入力してください
+    //         </Form.Control.Feedback>
+    //       }
+    //     </Form.Group>
+        
+    //     <TextArea
+    //       id="name"
+    //       label="名前"
+    //       errorsName={errors.name}
+    //       errorsMessage="名前を入力してください"
+    //       ref={register("name", { required: true})}
+    //     />
+        
+    //     <TextArea
+    //       id="email"
+    //       label="メールアドレス"
+    //       errorsName={errors.email}
+    //       errorsMessage="メールアドレスを入力してください"
+    //       ref={register("email", { required: true})}
+    //     />
+        
+    //     <TextArea
+    //       id="password"
+    //       label="パスワード"
+    //       errorsName={errors.password}
+    //       errorsMessage="パスワードを入力してください"
+    //       ref={register("password", { required: true})}
+    //     />
+        
+        
+    //     <Form.Group>
+    //       <Button variant="primary" type="submit">登録</Button>
+    //     </Form.Group>
+    //   </Form>
+    // </div>
+    
     <div>      
       <h1>サインアップ</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -80,6 +142,7 @@ const Signup = () => {
           {errors.name && <div className="error">名前を入力してください</div>}
           </label>
         </p>
+        
         <p>
           <label>メールアドレス:
           <input 
@@ -90,6 +153,7 @@ const Signup = () => {
           {errors.email && <div className="error">メールアドレスを入力してください</div>}
           </label>
         </p>
+        
         <p>
           <label>パスワード:
           <input 
@@ -103,7 +167,7 @@ const Signup = () => {
         <ShowErrorMessage message={errorMessage}/>
         <input type="submit" value="登録" />
       </form>
-      <p><Link to="/login">ログインはこちら</Link></p>
+      <p><Link to="/signin">ログインはこちら</Link></p>
     </div>
   )
 }
