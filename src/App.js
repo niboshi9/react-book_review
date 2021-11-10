@@ -25,11 +25,17 @@ const App = () => {
             isSignin ? <ReviewList /> : <Redirect to="/signin"/>
           )} />
           <Route exact path={"/signup"} render={()=> (
+            <Signup/>
+          )} />
+          <Route exact path={"/signin"} render={() => (
+            <Signin/>
+          )} />
+          {/* <Route exact path={"/signup"} render={()=> (
             isSignin ? <Redirect to="/"/> : <Signup/>
           )} />
           <Route exact path={"/signin"} render={() => (
             isSignin ? <Redirect to="/"/> : <Signin/>
-          )} />
+          )} /> */}
           <Route exact path={"/editUser"} render={() => (
             <EditUser />
           )} />

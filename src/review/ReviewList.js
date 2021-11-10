@@ -12,7 +12,7 @@ const ReviewList = () => {
   const [offset, setOffset] = useState(0)
   const [userName, setUserName] = useState('')
   
-  useEffect( async () => {
+  useEffect(async () => {
     setBookReviews(await fetchBookReview(offset))
     setUserName(await fetchUserName())
   },[offset])
