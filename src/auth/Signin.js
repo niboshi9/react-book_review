@@ -45,6 +45,7 @@ const Signin = () => {
           // console.log(token)
           // console.log(responseJSON.token)
           localStorage.setItem("isSignin", "true")
+          // console.log(localStorage.getItem("isSignin"))
           break
         case 400:
           defineErrorMessage(response)

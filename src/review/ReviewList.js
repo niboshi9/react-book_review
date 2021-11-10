@@ -1,43 +1,20 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import { Book } from "./Book";
+import { fetchBookReview, fetchUserName } from "../auth/api";
 
 
 const ReviewList = () => {
-  const [books, setBooks] = useState([])
+  const [bookReviews, setBookReviews] = useState([])
   const [offset, setOffset] = useState(0)
   const [userName, setUserName] = useState('')
   
-  const bookRequestUrl = "https://api-for-missions-and-railways.herokuapp.com/books"
-  const userNameRequestUrl = "https://api-for-missions-and-railways.herokuapp.com/users"
-  
-  const header = { Authorization: `Bearer ${localStorage.getItem("token")}` }
-  
-  const fetchBookReview = async () => {
-    try {
-      const response = await axios.get(bookRequestUrl + `?offset=${offset}`, { headers : header })
-      setBooks(response.data)
-    } catch(err) {
-      localStorage.setItem("isSignin", "false")
-      console.log(err)
-    }
-  }
-  
-  const fetchUserName = async () => {
-    try {
-      const response = await axios.get(userNameRequestUrl, { headers: header })
-      setUserName(response.data.name)
-    } catch(err) {
-      console.log(err)
-    }
-  }
-  
-  useEffect(() => {
-    fetchBookReview()
-    fetchUserName()
+  useEffect( async () => {
+    setBookReviews(await fetchBookReview(offset))
+    setUserName(await fetchUserName())
   },[offset])
   
   return (
@@ -45,12 +22,13 @@ const ReviewList = () => {
       <header>
         <h1>レビュー一覧</h1>
         {userName}
+        <p><Link to="/editUser">ユーザー情報編集</Link></p>
       </header>
       {/* <Container fluid> */}
       <Container>
         <Row className="g-3">
           {/* <Col xxl={1}></Col> */}
-          {books.map((book, index) => {
+          {bookReviews.map((book, index) => {
             // if (index == 5) {
             //   return (
             //     <>
