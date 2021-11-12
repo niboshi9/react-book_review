@@ -17,7 +17,7 @@ export const TextArea = React.forwardRef((props, ref) => (
     <Form.Control
       type="text"
       isInvalid={props.errorsName}
-      ref={ref}
+      {...ref}
     />
     {
       props.errorsName &&
@@ -27,20 +27,3 @@ export const TextArea = React.forwardRef((props, ref) => (
     }
   </Form.Group>
 ))
-
-// export const TextArea = (props) => {
-//   const { register, handleSubmit, formState: { errors }} = useForm()
-  
-//   return (
-//     <p>
-//       <label>{props.label}:
-//       <input 
-//         id={props.id}
-//         type="text"
-//         {...register(props.id, {required: true})}
-//       />
-//       {errors.name && <div className="error">{props.errorMessage}</div>}
-//     </label>
-//   </p>
-//   )
-// }
