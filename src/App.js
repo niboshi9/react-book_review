@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 // import './App.css';
@@ -10,19 +11,24 @@ import EditUser from './user/EditUser';
 
 
 
+import { AuthContext } from './contextProvider/AuthContext';
+
 
 
 const App = () => {
   const isSignin = localStorage.getItem("isSignin") == 'true'
-  console.log(`isSignin: ${isSignin}`)
+  // console.log(`isSignin: ${isSignin}`)
   console.log(localStorage.getItem("token"))
+  
+  const { isAuth, setIsAuth } = useContext(AuthContext)
+  
   
   return (
     <Router>
       <div className="App">
         <Switch>
           <Route exact path={"/"} render={() => (
-            isSignin ? <ReviewList /> : <Redirect to="/signin"/>
+            isAuth ? <ReviewList /> : <Redirect to="/signin"/>
           )} />
           <Route exact path={"/signup"} render={()=> (
             <Signup/>
@@ -30,11 +36,12 @@ const App = () => {
           <Route exact path={"/signin"} render={() => (
             <Signin/>
           )} />
+          
           {/* <Route exact path={"/signup"} render={()=> (
             isSignin ? <Redirect to="/"/> : <Signup/>
-          )} />
-          <Route exact path={"/signin"} render={() => (
-            isSignin ? <Redirect to="/"/> : <Signin/>
+          )} /> */}
+          {/* <Route exact path={"/signin"} render={() => (
+            isAuth ? <Redirect to="/"/> : <Signin/>
           )} /> */}
           <Route exact path={"/editUser"} render={() => (
             <EditUser />

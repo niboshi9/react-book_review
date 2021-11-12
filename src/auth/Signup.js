@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import ShowErrorMessage from "./ShowErrorMessage";
 
@@ -18,11 +18,15 @@ import {
 // import { handleChange } from "./Signin";
 
 const Signup = () => {
+  const history = useHistory()
   const [errorMessage, setErrorMessage] = useState('')
   
   const { register, handleSubmit, formState: { errors }} = useForm()
-  const onSubmit = (data) => {
-    signupRequest(data)
+  const onSubmit = async (data) => {
+    const status = await signupRequest(data)
+    if (status == 200) {
+      history.push("/")
+    }
   }
   
   const requestUrl = "https://api-for-missions-and-railways.herokuapp.com/users"
@@ -56,7 +60,7 @@ const Signup = () => {
           // console.log(token)
           // console.log(responseJSON.token)
           localStorage.setItem("isSignin", "true")
-          break
+          return 200
         case 400:
           defineErrorMessage(response)
           break

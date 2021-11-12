@@ -11,14 +11,18 @@ const EditUser = () => {
   const [userName, setUserName] = useState()
   const [errorMessage, setErrorMessage] = useState('')
   
-  const { register, handleSubmit, formState: { errors }} = useForm()
+  const { register, handleSubmit, reset, formState: { errors }} = useForm()
   
   const onSubmit = async (data) => {
     setUserName(await editUserName(data.userName))
+    reset()
   }
   
-  useEffect(async () => {
-    setUserName(await fetchUserName())
+  useEffect(() => {
+    async function fetchData() {
+      setUserName(await fetchUserName())
+    }
+    fetchData()
     console.log("更新！")
   })
   
@@ -30,14 +34,14 @@ const EditUser = () => {
       
       <form onSubmit={handleSubmit(onSubmit)}>
         <p>
-          <label>名前:
+          <label>新しい名前:
           <input 
             id="userName"
             type="text"
             placeholder={userName}
             {...register("userName", {required: true})}
           />
-          {errors.email && <div className="error">名前を入力してください</div>}
+          {errors.userName && <div className="error">新しい名前を入力してください</div>}
           </label>
         </p>
         <ShowErrorMessage message={errorMessage}/>

@@ -25,6 +25,17 @@ export const fetchUserName = async () => {
   }
 }
 
+export const fetchUserName2 = () => {
+  axios.get(userNameRequestUrl, { headers: authorizeHeader })
+  .then(response => {
+    console.log(response.data.name)
+    return response.data.name
+  })
+  .catch(err => {
+    console.log(err)
+  })
+}
+
 export const editUserName = async (newName) => {
   try {
     axios.put(editUserNameUrl, {
