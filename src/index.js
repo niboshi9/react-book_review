@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { AuthContextProvider } from './contextProvider/AuthContext';
+// import { AuthContextProvider } from './contextProvider/Context';
 
 
 // import './index.css';
@@ -14,9 +14,9 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthContextProvider>
+    {/* <AuthContextProvider> */}
       <App />
-    </AuthContextProvider>
+    {/* </AuthContextProvider> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

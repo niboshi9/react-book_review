@@ -14,6 +14,7 @@ const EditUser = () => {
   const { register, handleSubmit, reset, formState: { errors }} = useForm()
   
   const onSubmit = async (data) => {
+    console.log(data)
     setUserName(await editUserName(data.userName))
     reset()
   }

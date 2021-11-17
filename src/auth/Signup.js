@@ -56,7 +56,7 @@ const Signup = () => {
         case 200:
           const responseJSON = await response.json()
           localStorage.setItem("token", responseJSON.token)
-          const token = localStorage.getItem("token")
+          // const token = localStorage.getItem("token")
           // console.log(token)
           // console.log(responseJSON.token)
           localStorage.setItem("isSignin", "true")
@@ -82,33 +82,18 @@ const Signup = () => {
     }
   }
   
-  console.log(errors)
+  console.log(`エラー！：${errors.name}`)
   
   return (
     <div>
       <h1>サインアップ</h1>
       <Form noValidate onSubmit={handleSubmit(onSubmit)}>
-        {/* <Form.Group as={Row} controlId="name">
-          <Form.Label>名前</Form.Label>
-          <Form.Control
-            type="text"
-            isInvalid={errors.name}
-            {...register("name", { required: true})}
-          />
-          {
-            errors.name &&
-            <Form.Control.Feedback type="invalid">
-              名前を入力してください
-            </Form.Control.Feedback>
-          }
-        </Form.Group> */}
-        
         <TextArea
           id="name"
           label="名前"
           errorsName={errors.name}
           errorsMessage="名前を入力してください"
-          // ref={register("name", { required: true})}
+          validation={register("name", { required: true})}
           
         />
         
@@ -117,7 +102,7 @@ const Signup = () => {
           label="メールアドレス"
           errorsName={errors.email}
           errorsMessage="メールアドレスを入力してください"
-          ref={register("email", { required: true})}
+          validation={register("email", { required: true})}
         />
         
         <TextArea
@@ -125,14 +110,14 @@ const Signup = () => {
           label="パスワード"
           errorsName={errors.password}
           errorsMessage="パスワードを入力してください"
-          ref={register("password", { required: true})}
+          validation={register("password", { required: true})}
         />
-        
         
         <Form.Group>
           <Button variant="primary" type="submit">登録</Button>
         </Form.Group>
       </Form>
+      <p><Link to="/signin">ログインはこちら</Link></p>
     </div>
   )
 }

@@ -6,12 +6,12 @@ import { Link, useHistory } from "react-router-dom";
 
 import ShowErrorMessage from "./ShowErrorMessage";
 
-import { AuthContext } from "../contextProvider/AuthContext";
+// import { AuthContext } from "../contextProvider/Context";
 
 
 const Signin = () => {  
   
-  const { isAuth, setIsAuth } = useContext(AuthContext)
+  // const { isAuth, setIsAuth } = useContext(AuthContext)
   
   const history = useHistory()
   const [errorMessage, setErrorMessage] = useState('')
@@ -58,7 +58,7 @@ const Signin = () => {
           // console.log(responseJSON.token)
           localStorage.setItem("isSignin", "true")
           // console.log(localStorage.getItem("isSignin"))
-          setIsAuth(true)
+          // setIsAuth(true)
           return 200
         case 400:
           defineErrorMessage(response)
@@ -80,6 +80,9 @@ const Signin = () => {
       console.log(err)
     }
   }
+  
+  console.log(`エラー！：${errors.email}`)
+  console.log(Boolean(errors.email))
   
   return (
     <div>

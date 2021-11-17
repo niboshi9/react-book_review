@@ -7,17 +7,20 @@ import { Link, useHistory } from "react-router-dom";
 import { Book } from "./Book";
 import { fetchBookReview, fetchUserName } from "../auth/api";
 
-import { AuthContext } from "../contextProvider/AuthContext";
+// import { AuthContext } from "../contextProvider/Context";
+import { BookReviewsContext } from "../contextProvider/Context";
 
 
 const ReviewList = () => {
-  const [bookReviews, setBookReviews] = useState([])
+  // const [bookReviews, setBookReviews] = useState([])
+  const { bookReviews, setBookReviews } = useContext(BookReviewsContext)
   const [offset, setOffset] = useState(0)
   const [userName, setUserName] = useState('')
   
-  const { isAuth, setIsAuth } = useContext(AuthContext)
+  // const { isAuth, setIsAuth } = useContext(AuthContext)
   
   useEffect(() => {
+    localStorage.removeItem("selectedBook")
     async function fetchData() {
       setBookReviews(await fetchBookReview(offset))
       setUserName(await fetchUserName())
@@ -36,7 +39,6 @@ const ReviewList = () => {
   const LogoutButton = () => {
     const history = useHistory()
     const clearData = () => {
-      setIsAuth(false)
       localStorage.clear()
       setBookReviews({})
       setOffset(0)
@@ -81,6 +83,7 @@ const ReviewList = () => {
             return (
                 <Book
                   key={index}
+                  id={book.id}
                   title={book.title}
                   detail={book.detail}
                   review={book.review}
@@ -95,6 +98,10 @@ const ReviewList = () => {
     )
   }
   
+  console.log(bookReviews)
+  
+  
+
   
   return (
     <div>
@@ -102,6 +109,7 @@ const ReviewList = () => {
         <h1>レビュー一覧</h1>
         {userName}
         <p><Link to="/editUser">ユーザー情報編集</Link></p>
+        <p><Link to="/new">新規投稿</Link></p>
       </header>
       <BookReviews/>
       <LogoutButton/>
