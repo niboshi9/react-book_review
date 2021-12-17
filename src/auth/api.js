@@ -77,6 +77,8 @@ export const getBookByID = async (id) => {
   }
 }
 
+// edit/id を強引に開いた時に、
+// 更新できてなくてもできるって出る。削除も。
 export const updateReview = async (id, title, url, detail, review) => {
   const authorizeHeader = getAuthorizeHeader()
   try {

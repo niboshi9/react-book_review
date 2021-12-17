@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useContext, useEffect, useState } from "react";
 import { BookReviewsContext, DetailIdContext } from "../contextProvider/Context";
 import { getBookByID } from '../auth/api';
+import { Link, withRouter, useHistory } from 'react-router-dom';
+import { Button, listItemIconClasses } from '@mui/material';
 
 
 const BookDetail = (props) => {
@@ -16,9 +18,22 @@ const BookDetail = (props) => {
   )
 }
 
+const EditableButton = (props) => {
+  const history = useHistory()
+  return (
+    <Button variant="contained" onClick={() => {
+      localStorage.setItem("selectedBookId", props.id)
+      history.push(`../edit/${props.id}`)
+    }}>
+      編集する
+    </Button>
+  )
+}
+
 // returnまでの部分をEditReview.jsでも使ってるからまとめる
-const Detail = () => {
+const Detail = (props) => {
   const [book, setBook] = useState()
+  const [isEditable, setIsEditable] = useState(false)
   
   useEffect(() => {
     async function fetchData() {
@@ -29,7 +44,6 @@ const Detail = () => {
     } else {
       console.log("localStorageにIDなし")
     }
-    fetchData()
   },[])
   
   return (
@@ -41,8 +55,13 @@ const Detail = () => {
         <p>ローディング</p>
       )
     }
+    {
+      book && localStorage.getItem("userName") == book.reviewer && (
+        <EditableButton id={book.id} />
+      )
+    }
     </>
   )
 }
 
-export default Detail;
+export default withRouter(Detail);

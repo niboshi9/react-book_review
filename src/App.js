@@ -22,7 +22,7 @@ const App = () => {
   }
 
   return (
-    <ContextProvider>
+    <ContextProvider className="App">
       <Router>
         <div className="App">
           <Switch>

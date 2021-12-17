@@ -28,7 +28,7 @@ const EditForm = (props) => {
   
   return (
     <Container>
-      <p>新規投稿作成</p>
+      <p>投稿編集</p>
       <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
         <TextArea
           id="title"
@@ -72,7 +72,7 @@ const EditForm = (props) => {
           variant="contained"
           fullWidth
         >
-          投稿！
+          更新する！
         </Button>
       </Box>
     </Container>
@@ -111,6 +111,8 @@ const EditReview = () => {
     }
     fetchData()
   },[])
+  
+  console.log("aaaaaaaaaa")
   
   return (
     <>

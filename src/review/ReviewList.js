@@ -4,11 +4,12 @@ import { Container, Row, Button, Col } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 
 
-import { Book } from "./Book";
+import Book from "./Book";
 import { fetchBookReview, fetchUserName } from "../auth/api";
 
 // import { AuthContext } from "../contextProvider/Context";
 import { BookReviewsContext } from "../contextProvider/Context";
+import { List } from "@mui/material";
 
 
 const ReviewList = () => {
@@ -50,7 +51,9 @@ const ReviewList = () => {
         variant="secondary"
         onClick={() => {
           clearData()
+          setBookReviews([])
           history.push("/signin")
+          
         }}
       >
         ログアウト
@@ -61,25 +64,32 @@ const ReviewList = () => {
   const BookReviews = () => {
     return (
       <>
-      {/* <Container fluid> */}
-      <Container>
+      <List
+        sx={{
+          // maxWidth: 750,
+          width: 750,
+        }}
+      >
+      {bookReviews.map((book, index) => {
+        return (
+          <Book
+            key={index}
+            id={book.id}
+            title={book.title}
+            detail={book.detail}
+            review={book.review}
+            reviewer={book.reviewer}
+            url={book.url}
+          />
+        )
+      })}
+      </List>
+      
+      
+      {/* ↓ReactBootstrap */}
+      {/* <Container>
         <Row className="g-3">
-          {/* <Col xxl={1}></Col> */}
           {bookReviews.map((book, index) => {
-            // if (index == 5) {
-            //   return (
-            //     <>
-            //       <Book
-            //         offset={1}
-            //         title={book.title}
-            //         detail={book.detail}
-            //         review={book.review}
-            //         reviewer={book.reviewer}
-            //         url={book.url}
-            //       />
-            //     </>
-            //   )
-            // }
             return (
                 <Book
                   key={index}
@@ -93,7 +103,7 @@ const ReviewList = () => {
             )
           })}
         </Row>
-      </Container>
+      </Container> */}
       </>
     )
   }
