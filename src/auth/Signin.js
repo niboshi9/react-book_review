@@ -1,9 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-import { Box, Button, Grid } from "@mui/material";
+import { Container, Box, Button, Grid, Avatar, Typography, Link} from "@mui/material";
+// import { LockOutlinedIcon } from '@mui/icons-material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import { signinRequest } from "../auth/api";
 
@@ -11,9 +13,10 @@ import ShowErrorMessage from "./ShowErrorMessage";
 import { TextArea } from "../auth/TextArea";
 
 
-const Test = () => {  
+const Signin = () => {  
   const history = useHistory()
   const [errorMessage, setErrorMessage] = useState('')
+  const [haveError, setHaveError] = useState(false)
   
   const {register, handleSubmit, formState: { errors }} = useForm()
   
@@ -22,43 +25,69 @@ const Test = () => {
     if (response == 200) {
       history.push("/")
     } else {
+      setHaveError(true)
       setErrorMessage(response)
     }
   }
   
+  const onClick = () => {
+    history.push("/signup")
+  }
+  
   return (
-    <div>
-      <h1>サインイン</h1>
-      <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-        <TextArea
-          value="testemail"
-          id="email"
-          label="メールアドレス"
-          errorsName={errors.email}
-          errorsMessage="メールアドレスを入力してください"
-          validation={register("email", {required: true})}
-        />
-        
-        <TextArea
-          value="passsssword"
-          id="password"
-          label="パスワード"
-          errorsName={errors.password}
-          errorsMessage="パスワードを入力してください"
-          validation={register("password", {required: true})}
-        />
-        
-        <Button
-          type="submit"
-          variant="contained"
-        >
+    <Container maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main'}}>
+          <LockOutlinedIcon/>
+        </Avatar>
+        <Typography component="h1" variant="h5">
           サインイン
-        </Button>
+        </Typography>
+        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+          <TextArea
+            value="testemai"
+            id="email"
+            label="メールアドレス"
+            errorsName={errors.email}
+            errorsMessage="メールアドレスを入力してください"
+            validation={register("email", {required: true})}
+          />
+          
+          <TextArea
+            value="passssswor"
+            id="password"
+            label="パスワード"
+            errorsName={errors.password}
+            errorsMessage="パスワードを入力してください"
+            validation={register("password", {required: true})}
+          />
+          
+          { haveError && <ShowErrorMessage message={errorMessage}/> }
+          
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ mt: 3, mb: 2 }}
+          >
+            サインイン
+          </Button>
+        </Box>
+        
+        {/* <Link to="/signup">登録はこちら</Link> */}
+        <Link variant="body2" onClick={() => onClick()} sx={{ '&:hover': { cursor: 'pointer' }}}>
+          登録はこちら
+        </Link>
       </Box>
-      <ShowErrorMessage message={errorMessage}/>
-      <p><Link to="/signup">登録はこちら</Link></p>
-    </div>
+    </Container>
   )
 }
 
-export default Test;
+export default Signin;

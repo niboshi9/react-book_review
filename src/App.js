@@ -54,9 +54,9 @@ const App = () => {
               <EditReview />
             )} />
             
-            <Route exact path={"/test"} render={() => (
+            {/* <Route exact path={"/test"} render={() => (
               getIsSignin() ? <Redirect to="/"/> : <Test/>
-            )} />
+            )} /> */}
               
               
               {/* <Route exact path={"/signup"} render={()=> (
