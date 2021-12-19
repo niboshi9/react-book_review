@@ -1,100 +1,40 @@
 import * as React from "react";
-import { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useState, useContext } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
 
-import ShowErrorMessage from "./ShowErrorMessage";
+import { Container, Box, Button, Grid } from "@mui/material";
+
+import { signupRequest } from "../auth/api";
+
+import { TextArea } from "../auth/TextArea";
 
 
-import { TextArea } from "./TextArea";
-import {
-  Form,
-  Row,
-  Col,
-  Button,
-  ButtonToolbar
-} from 'react-bootstrap';
-
-// import { handleChange } from "./Signin";
-
-const Signup = () => {
+const Test = () => {  
   const history = useHistory()
   const [errorMessage, setErrorMessage] = useState('')
   
-  const { register, handleSubmit, formState: { errors }} = useForm()
+  const {register, handleSubmit, formState: { errors }} = useForm()
+  
   const onSubmit = async (data) => {
-    const status = await signupRequest(data)
-    if (status == 200) {
+    const response = await signupRequest(data.email, data.password)
+    if (response == 200) {
       history.push("/")
+    } else {
+      alert("エラーが発生しました")
     }
   }
-  
-  const requestUrl = "https://api-for-missions-and-railways.herokuapp.com/users"
-  
-  const defineErrorMessage = async (response) => {
-    const message = await response.json()
-    const m = await message.ErrorMessageJP
-    setErrorMessage(m)
-    console.log(errorMessage)
-  }
-  
-  const signupRequest = async (data) => {
-    const requestOptions = {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        "name": `${data.name}`,
-        "email": `${data.email}`,
-        "password": `${data.password}`
-      })
-    };
-    
-    try {
-      const response = await fetch(requestUrl, requestOptions)
-      console.log(response.status)
-      switch (response.status) {
-        case 200:
-          const responseJSON = await response.json()
-          localStorage.setItem("token", responseJSON.token)
-          // const token = localStorage.getItem("token")
-          // console.log(token)
-          // console.log(responseJSON.token)
-          localStorage.setItem("isSignin", "true")
-          return 200
-        case 400:
-          defineErrorMessage(response)
-          break
-        case 401:
-          defineErrorMessage(response)
-          break
-        case 403:
-          defineErrorMessage(response)
-          break
-        case 500:
-          defineErrorMessage(response)
-          break
-        default:
-          break
-      }
-    } catch(err) {
-      // ネット接続がない時？
-      console.log(err)
-    }
-  }
-  
-  console.log(`エラー！：${errors.name}`)
   
   return (
     <div>
-      <h1>サインアップ</h1>
-      <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+      <h1>新規登録</h1>
+      <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
         <TextArea
           id="name"
           label="名前"
           errorsName={errors.name}
           errorsMessage="名前を入力してください"
-          validation={register("name", { required: true})}
-          
+          validation={register("name", {required: true})}
         />
         
         <TextArea
@@ -102,7 +42,7 @@ const Signup = () => {
           label="メールアドレス"
           errorsName={errors.email}
           errorsMessage="メールアドレスを入力してください"
-          validation={register("email", { required: true})}
+          validation={register("email", {required: true})}
         />
         
         <TextArea
@@ -110,16 +50,20 @@ const Signup = () => {
           label="パスワード"
           errorsName={errors.password}
           errorsMessage="パスワードを入力してください"
-          validation={register("password", { required: true})}
+          validation={register("password", {required: true})}
         />
         
-        <Form.Group>
-          <Button variant="primary" type="submit">登録</Button>
-        </Form.Group>
-      </Form>
+        <Button
+          type="submit"
+          variant="contained"
+        >
+          サインイン
+        </Button>
+      </Box>
+      
       <p><Link to="/signin">ログインはこちら</Link></p>
     </div>
   )
 }
 
-export default Signup;
+export default Test;

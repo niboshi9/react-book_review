@@ -13,7 +13,7 @@ import CreateNewReview from './review/CreateNewReview';
 import Detail from './review/Detail';
 import EditReview from './review/EditReview';
 
-
+import Test from './review/test';
 
 
 const App = () => {
@@ -52,6 +52,10 @@ const App = () => {
             
             <Route exact path={"/edit/:id"} render={() => (
               <EditReview />
+            )} />
+            
+            <Route exact path={"/test"} render={() => (
+              getIsSignin() ? <Redirect to="/"/> : <Test/>
             )} />
               
               

@@ -7,9 +7,46 @@ const editUserNameUrl = "https://api-for-missions-and-railways.herokuapp.com/use
 const createNewReviewUrl = "https://api-for-missions-and-railways.herokuapp.com/books"
 // const getBookByIDUrl = "https://api-for-missions-and-railways.herokuapp.com/books"
 
+const signinUrl = "https://api-for-missions-and-railways.herokuapp.com/signin"
+
+const signupUrl = "https://api-for-missions-and-railways.herokuapp.com/users"
+
 // const authorizeHeader = { Authorization: `Bearer ${localStorage.getItem("token")}` }
 const getAuthorizeHeader = () => {
   return { Authorization: `Bearer ${localStorage.getItem("token")}` }
+}
+
+
+export const signinRequest = async (email, password) => {
+  try {
+    const response = await axios.post(signinUrl, {
+      "email": `${email}`,
+      "password": `${password}`
+    })
+    localStorage.setItem("token", response.data.token)
+    localStorage.setItem("isSignin", "true")
+    return response.status
+  } catch(err) {
+    console.log(err.response.data.ErrorMessageJP)
+    console.log(err.response.status)
+    const errorMessage = err.response.data.ErrorMessageJP
+    return errorMessage
+  }
+}
+
+export const signupRequest = async (name, email, password) => {
+  try {
+    const response = await axios.post(signupUrl, {
+      "name": `${name}`,
+      "email": `${email}`,
+      "password": `${password}`
+    })
+    localStorage.setItem("token", response.data.token)
+    localStorage.setItem("isSignin", "true")
+    return response.status
+  } catch(err) {
+    console.log(err)
+  }
 }
 
 export const fetchBookReview = async (offset) => {
