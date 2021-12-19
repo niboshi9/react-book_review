@@ -2,7 +2,6 @@ import * as React from "react";
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { DetailIdContext } from "../contextProvider/Context";
-import './book.css'
 
 import { Row, Col, Card } from "react-bootstrap";
 
@@ -10,6 +9,7 @@ import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemButton, ListIt
 
 import bookIcon from '../img/content.jpg'
 import Button from "@restart/ui/esm/Button";
+import { boxSizing } from "@mui/system";
 
 
 
@@ -68,8 +68,11 @@ const Book = (props) => {
           // height: 134,
           width: 128,
           height: 174,
+          marginRight: "12px",
           '&:hover': {
-            cursor: "pointer"
+            cursor: "pointer",
+            outline: "5px solid gray",
+            outlineOffset: "-5px"
           }
         }}
       />
@@ -100,7 +103,7 @@ const Book = (props) => {
           sx={{
             '&:hover': {
               cursor: "pointer",
-              xtDecoration: "underline"
+              textDecoration: "underline"
             }
           }}
         />
@@ -111,7 +114,7 @@ const Book = (props) => {
           //   handleClick(props.id)
           //   linkTo("editDetail")
           // }}
-          secondary={props.reviewer}
+          secondary={`by ${props.reviewer}`}
         />
         
         {/* レビュー一部 */}

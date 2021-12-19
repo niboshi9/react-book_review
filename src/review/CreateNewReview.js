@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
 
 import { TextArea } from '../auth/TextArea';
-import { Container, Box, Button } from "@mui/material";
+import { Container, Box, Button, Grid } from "@mui/material";
 
 import { postNewReview } from '../auth/api';
 
@@ -24,6 +24,7 @@ const CreateNewReview = () => {
         <Redirect to="/"/>
       ) : (
       <Container>
+      {/* <Grid container> */}
         <p>新規投稿作成</p>
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           <TextArea
@@ -66,7 +67,9 @@ const CreateNewReview = () => {
             投稿！
           </Button>
       </Box>
+    {/* </Grid> */}
     </Container>
+    
       )
     }
     </>

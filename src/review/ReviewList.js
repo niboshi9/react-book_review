@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useContext } from "react";
-import { Container, Row, Button, Col } from "react-bootstrap";
+// import { Container, Row, Button, Col } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 
 
@@ -9,7 +9,18 @@ import { fetchBookReview, fetchUserName } from "../auth/api";
 
 // import { AuthContext } from "../contextProvider/Context";
 import { BookReviewsContext } from "../contextProvider/Context";
-import { List } from "@mui/material";
+import { List, Box, Grid, Button } from "@mui/material";
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { position } from "dom-helpers";
+
+const theme = createTheme({
+  palette: {
+    neutral: {
+      main: '#64748B',
+      contrastText: '#fff',
+    },
+  },
+})
 
 
 const ReviewList = () => {
@@ -47,64 +58,50 @@ const ReviewList = () => {
     }
     
     return (
-      <Button
-        variant="secondary"
-        onClick={() => {
-          clearData()
-          setBookReviews([])
-          history.push("/signin")
-          
-        }}
-      >
-        ログアウト
-      </Button>
+      <ThemeProvider theme={theme}>
+        <Button
+          // sx={{
+          //   fontSize: 10
+          // }}
+          variant="contained"
+          color="neutral"
+          onClick={() => {
+            clearData()
+            setBookReviews([])
+            history.push("/signin")
+            
+          }}
+        >
+          ログアウト
+        </Button>
+      </ThemeProvider>
     )
   }
   
   const BookReviews = () => {
     return (
-      <>
-      <List
-        sx={{
-          // maxWidth: 750,
-          width: 750,
-        }}
-      >
-      {bookReviews.map((book, index) => {
-        return (
-          <Book
-            key={index}
-            id={book.id}
-            title={book.title}
-            detail={book.detail}
-            review={book.review}
-            reviewer={book.reviewer}
-            url={book.url}
-          />
-        )
-      })}
-      </List>
-      
-      
-      {/* ↓ReactBootstrap */}
-      {/* <Container>
-        <Row className="g-3">
-          {bookReviews.map((book, index) => {
-            return (
-                <Book
-                  key={index}
-                  id={book.id}
-                  title={book.title}
-                  detail={book.detail}
-                  review={book.review}
-                  reviewer={book.reviewer}
-                  url={book.url}
-                />
-            )
-          })}
-        </Row>
-      </Container> */}
-      </>
+      <Box>
+        <List
+          sx={{
+            // maxWidth: 750,
+            width: 750,
+          }}
+        >
+        {bookReviews.map((book, index) => {
+          return (
+            <Book
+              key={index}
+              id={book.id}
+              title={book.title}
+              detail={book.detail}
+              review={book.review}
+              reviewer={book.reviewer}
+              url={book.url}
+            />
+          )
+        })}
+        </List>
+      </Box>
     )
   }
   
@@ -114,16 +111,57 @@ const ReviewList = () => {
 
   
   return (
-    <div>
-      <header>
-        <h1>レビュー一覧</h1>
-        {userName}
-        <p><Link to="/editUser">ユーザー情報編集</Link></p>
-        <p><Link to="/new">新規投稿</Link></p>
-      </header>
-      <BookReviews/>
-      <LogoutButton/>
-    </div>
+    <Box>
+      {/* <Grid
+        container
+        direction="column"
+        alignItems="center"
+      > */}
+        <header>
+          <Grid
+            container
+            direction="row"
+            spacing={2}
+            // xs={12}
+            justifyContent="center"
+            alignItems="center"
+            sx={{
+              zIndex: 2,
+              position: "fixed",
+              background: "white"
+            }}
+          >
+            <Grid item xs={2}>
+              <h1>本の感想</h1>
+            </Grid>
+            <Grid item xs={4}>
+              {userName} としてログイン中
+            </Grid>
+            <Grid item xs={1}>
+              <Link to="/new">新規投稿</Link>
+            </Grid>
+            <Grid item xs={1}>
+              <Link to="/editUser">名前変更</Link>
+            </Grid>
+            <Grid item xs={2}>
+              <LogoutButton/>
+            </Grid>
+          </Grid>
+        </header>
+        <Grid
+          container
+          justifyContent="center"
+          sx={{
+            paddingTop: "80px"
+          }}
+        >
+          <BookReviews/>
+        </Grid>
+        <Grid>
+          
+        </Grid>
+      {/* </Grid> */}
+    </Box>
   )
 }
 

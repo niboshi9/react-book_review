@@ -5,6 +5,8 @@ import { getBookByID } from '../auth/api';
 import { Link, withRouter, useHistory } from 'react-router-dom';
 import { Button, listItemIconClasses } from '@mui/material';
 
+import { Progress } from '../component/Progress';
+
 
 const BookDetail = (props) => {
   return (
@@ -51,8 +53,10 @@ const Detail = (props) => {
     {
       book ? (
         <BookDetail book={book}/>
+        // <Progress/>
       ) : (
-        <p>ローディング</p>
+        // <p>ローディング</p>
+        <Progress/>
       )
     }
     {

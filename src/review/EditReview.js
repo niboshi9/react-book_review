@@ -10,6 +10,8 @@ import { getBookByID, updateReview, deleteBook } from '../auth/api';
 
 import { Container, Box, Button } from "@mui/material";
 
+import { Progress } from "../component/Progress"
+
 // ログアウトボタンで使ってる、useHistoryのやつで飛ばせるけど、成功した時だけ飛ばしたいから、その状態管理が必要かな
 
 
@@ -126,7 +128,8 @@ const EditReview = () => {
             <DeleteButton setIsUpdatedOrDeleted={setIsUpdatedOrDeleted} />
           </>
         ) : (
-          <p>ローディング</p>
+          <Progress/>
+          // <p>ローディング</p>
         )
       )
     }
