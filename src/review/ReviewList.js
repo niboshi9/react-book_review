@@ -36,15 +36,15 @@ const ReviewList = () => {
     async function fetchData() {
       setBookReviews(await fetchBookReview(offset))
       setUserName(await fetchUserName())
-      console.log("effect!")
+      // console.log("effect!")
     }
-    console.log(Boolean(localStorage.getItem("token")))
-    console.log(localStorage.getItem("token"))
+    // console.log(Boolean(localStorage.getItem("token")))
+    // console.log(localStorage.getItem("token"))
     if (Boolean(localStorage.getItem("token"))) {
       fetchData()
-      console.log("fetchData！")
+      // console.log("fetchData！")
     } else {
-      console.log("まだ！")
+      // console.log("まだ！")
     }
   },[offset])
   
@@ -105,7 +105,7 @@ const ReviewList = () => {
     )
   }
   
-  console.log(bookReviews)
+  // console.log(bookReviews)
   
   
 

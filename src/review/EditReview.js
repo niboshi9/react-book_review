@@ -8,7 +8,8 @@ import { Redirect } from "react-router-dom";
 
 import { getBookByID, updateReview, deleteBook } from '../auth/api';
 
-import { Container, Box, Button } from "@mui/material";
+import { Avatar, Container, Box, Button, TextField, Typography } from "@mui/material";
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 
 import { Progress } from "../component/Progress"
 
@@ -29,8 +30,13 @@ const EditForm = (props) => {
   }
   
   return (
-    <Container>
-      <p>投稿編集</p>
+    <>
+      <Avatar sx={{ m: 1, bgcolor: 'secondary.main'}}>
+        <ModeEditOutlineIcon/>
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        投稿編集
+      </Typography>
       <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
         <TextArea
           id="title"
@@ -50,24 +56,47 @@ const EditForm = (props) => {
           value={props.book.url}
         />
         
-        <TextArea
+        {/* <TextArea
           id="detail"
-          label="詳細"
+          label="作品詳細"
           errorsName={errors.detail}
           errorsMessage="詳細を入力してください"
           validation={register("detail", { required: true})}
           value={props.book.detail}
+        /> */}
+        <TextField
+          id="detail"
+          label="作品詳細"
+          error={Boolean(errors.detail)}
+          helperText={Boolean(errors.detail) && "作品の詳細を入力してください"}
+          {...register("detail", { required: true })}
+          margin="normal"
+          fullWidth
+          multiline
+          variant="standard"
+          defaultValue={props.book.detail}
         />
         
-        <TextArea
+        {/* <TextArea
           id="review"
           label="レビュー"
           errorsName={errors.review}
           errorsMessage="レビューを入力してください"
           validation={register("review", { required: true})}
           value={props.book.review}
+        /> */}
+        <TextField
+          id="review"
+          label="レビュー"
+          error={Boolean(errors.review)}
+          helperText={Boolean(errors.review) && "レビューを入力してください"}
+          {...register("review", { required: true })}
+          margin="normal"
+          fullWidth
+          multiline
+          variant="standard"
+          defaultValue={props.book.review}
         />
-        
         
         <Button
           type="submit"
@@ -77,7 +106,7 @@ const EditForm = (props) => {
           更新する！
         </Button>
       </Box>
-    </Container>
+    </>
   )
 }
 
@@ -117,34 +146,32 @@ const EditReview = () => {
   console.log("aaaaaaaaaa")
   
   return (
-    <>
-    {
-      isUpdatedOrDeleted ? (
-      <Redirect to="/"/>
-      ) : (
-        book ? (
-          <>
-            <EditForm book={book} setIsUpdatedOrDeleted={setIsUpdatedOrDeleted}/>
-            <DeleteButton setIsUpdatedOrDeleted={setIsUpdatedOrDeleted} />
-          </>
-        ) : (
-          <Progress/>
-          // <p>ローディング</p>
-        )
-      )
-    }
-    
-    {/* {
-      book ? (
-        <>
-          <EditForm book={book} setIsUpdated={setIsUpdated}/>
-          <DeleteButton />
-        </>
-      ) : (
-        <p>ローディング</p>
-      )
-    } */}
-    </>
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        {
+          isUpdatedOrDeleted ? (
+          <Redirect to="/"/>
+          ) : (
+            book ? (
+              <>
+                <EditForm book={book} setIsUpdatedOrDeleted={setIsUpdatedOrDeleted}/>
+                <DeleteButton setIsUpdatedOrDeleted={setIsUpdatedOrDeleted} />
+              </>
+            ) : (
+              <Progress/>
+              // <p>ローディング</p>
+            )
+          )
+        }
+      </Box>
+    </Container>
   )
 }
 

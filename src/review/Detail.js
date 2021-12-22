@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { useContext, useEffect, useState } from "react";
-import { BookReviewsContext, DetailIdContext } from "../contextProvider/Context";
+import { useEffect, useState } from "react";
 import { getBookByID } from '../auth/api';
-import { Link, withRouter, useHistory } from 'react-router-dom';
-import { Button, listItemIconClasses } from '@mui/material';
+import { withRouter, useHistory } from 'react-router-dom';
+import { Container, Box, Button, Grid, Avatar, Typography } from '@mui/material';
 
 import { Progress } from '../component/Progress';
+
+
 
 
 const BookDetail = (props) => {
@@ -23,7 +24,7 @@ const BookDetail = (props) => {
 const EditableButton = (props) => {
   const history = useHistory()
   return (
-    <Button variant="contained" onClick={() => {
+    <Button variant="contained"  onClick={() => {
       localStorage.setItem("selectedBookId", props.id)
       history.push(`../edit/${props.id}`)
     }}>
@@ -49,7 +50,15 @@ const Detail = (props) => {
   },[])
   
   return (
-    <>
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
     {
       book ? (
         <BookDetail book={book}/>
@@ -64,7 +73,8 @@ const Detail = (props) => {
         <EditableButton id={book.id} />
       )
     }
-    </>
+      </Box>
+    </Container>
   )
 }
 
