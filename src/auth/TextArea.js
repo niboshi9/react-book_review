@@ -56,6 +56,7 @@ export const TextArea = (props) => {
       {...props.validation}
       
       defaultValue={props.value}
+      placeholder={props.placeholder}
       
       margin="normal"
       fullWidth

@@ -52,12 +52,12 @@ const Signin = () => {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextArea
-            value="testemai"
+            value="test@example.com"
             id="email"
             label="メールアドレス"
             errorsName={errors.email}
             errorsMessage="メールアドレスを入力してください"
-            validation={register("email", {required: true})}
+            validation={register("email", {required: true, pattern: /^\S+@\S+$/})}
           />
           
           <TextArea

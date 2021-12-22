@@ -8,21 +8,24 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import { signupRequest } from "../auth/api";
 
+import ShowErrorMessage from "./ShowErrorMessage";
 import { TextArea } from "../auth/TextArea";
 
 
 const Test = () => {  
   const history = useHistory()
-  // const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [haveError, setHaveError] = useState(false)
   
   const {register, handleSubmit, formState: { errors }} = useForm()
   
   const onSubmit = async (data) => {
-    const response = await signupRequest(data.email, data.password)
+    const response = await signupRequest(data.name, data.email, data.password)
     if (response == 200) {
       history.push("/")
     } else {
-      alert("エラーが発生しました")
+      setHaveError(true)
+      setErrorMessage(response)
     }
   }
   
@@ -60,7 +63,7 @@ const Test = () => {
             label="メールアドレス"
             errorsName={errors.email}
             errorsMessage="メールアドレスを入力してください"
-            validation={register("email", {required: true})}
+            validation={register("email", {required: true, pattern: /^\S+@\S+$/})}
           />
           
           <TextArea
@@ -70,6 +73,8 @@ const Test = () => {
             errorsMessage="パスワードを入力してください"
             validation={register("password", {required: true})}
           />
+          
+          { haveError && <ShowErrorMessage message={errorMessage}/> }
           
           <Button
             type="submit"
