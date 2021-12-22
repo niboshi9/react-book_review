@@ -9,61 +9,31 @@ import { Container, Box, Button, Grid } from "@mui/material";
 import { signupRequest } from "../auth/api";
 import { TextArea } from "../auth/TextArea";
 
+import { fetchBookImage } from "../auth/api";
+
+const noImage = "https://placehold.jp/24/cccccc/ffffff/128x174.png?text=NO+IMAGE"
+
 
 const Test = () => {  
-  const history = useHistory()
-  const [errorMessage, setErrorMessage] = useState('')
-  
-  const {register, handleSubmit, formState: { errors }} = useForm()
-  
-  const onSubmit = async (data) => {
-    const response = await signupRequest(data.email, data.password)
-    if (response == 200) {
-      history.push("/")
-    } else {
-      alert("エラーが発生しました")
-    }
+  const [imageUrl, setImageUrl] = useState('')
+  const handleClick = async () => {
+    // const response = await fetchBookImage("アオのハコ 1(ジャンプコミックス)")
+    const response = await fetchBookImage("基礎から学ぶ React/React Hooks")
+    // const responseImageUrl = response.data.items[0].volumeInfo.imageLinks.thumbnail
+    // console.log(responseImageUrl)
+    // setImageUrl(responseImageUrl)
+    setImageUrl(response)
+    console.log(imageUrl)
   }
   
-  
   return (
-    <div>
-      <h1>新規登録</h1>
-      <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-        <TextArea
-          id="name"
-          label="名前"
-          errorsName={errors.name}
-          errorsMessage="名前を入力してください"
-          validation={register("name", {required: true})}
-        />
-        
-        <TextArea
-          id="email"
-          label="メールアドレス"
-          errorsName={errors.email}
-          errorsMessage="メールアドレスを入力してください"
-          validation={register("email", {required: true})}
-        />
-        
-        <TextArea
-          id="password"
-          label="パスワード"
-          errorsName={errors.password}
-          errorsMessage="パスワードを入力してください"
-          validation={register("password", {required: true})}
-        />
-        
-        <Button
-          type="submit"
-          variant="contained"
-        >
-          サインイン
-        </Button>
-      </Box>
-      
-      <p><Link to="/signいn">ログインはこちら</Link></p>
-    </div>
+    <>
+      <Button variant="contained" onClick={() => handleClick()}>テスト！</Button>
+      {
+        imageUrl ? <img src={imageUrl} /> : <img src={noImage} />
+      }
+      {/* <img src={imageUrl} /> */}
+    </>
   )
 }
 

@@ -27,10 +27,13 @@ export const signinRequest = async (email, password) => {
     localStorage.setItem("isSignin", "true")
     return response.status
   } catch(err) {
-    console.log(err.response.data.ErrorMessageJP)
-    console.log(err.response.status)
-    const errorMessage = err.response.data.ErrorMessageJP
-    return errorMessage
+    console.log(err.message)
+    if (err.message == "Network Error") {
+      return "ネットワーク接続がありません"
+    } else {
+      const errorMessage = err.response.data.ErrorMessageJP
+      return errorMessage
+    }
   }
 }
 
@@ -45,7 +48,12 @@ export const signupRequest = async (name, email, password) => {
     localStorage.setItem("isSignin", "true")
     return response.status
   } catch(err) {
-    console.log(err)
+    console.log(err.message)
+    if (err.message == "Network Error") {
+      return "ネットワーク接続がありません"
+    } else {
+      return "エラーが発生しました"
+    }
   }
 }
 
@@ -145,5 +153,32 @@ export const deleteBook = async (id) => {
     console.log(err)
     alert("削除できませんでした")
     return false
+  }
+}
+
+const googleBooksUrl = "https://www.googleapis.com/books/v1/volumes?q="
+const noImage = "https://placehold.jp/24/cccccc/ffffff/128x174.png?text=NO+IMAGE"
+
+export const fetchBookImage = async (bookTitle) => {
+  try {
+    const response = await axios.get(`${googleBooksUrl}+${bookTitle}`)
+    const dataArray = await response.data.items
+    
+
+    
+    const title = await response.data.items[0].volumeInfo.title
+    const searchWords2 = bookTitle.split(" ")[0]
+    // console.log(searchWords)
+    // console.log(bookTitle)
+    // console.log(title.search(searchWords))
+    if (title.search(searchWords2) > -1) {
+      return response.data.items[0].volumeInfo.imageLinks.thumbnail
+    } else {
+      return noImage
+    }
+    
+  } catch(err) {
+    // console.log(err)
+    return noImage
   }
 }
