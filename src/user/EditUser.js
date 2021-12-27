@@ -56,7 +56,16 @@ const EditUser = () => {
             validation={register("userName", {required: true})}
             placeholder={userName}
           />
-          <input type="submit" value="変更する" />
+          
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ mt: 3, mb: 2 }}
+          >
+            変更する
+          </Button>
+          {/* <input type="submit" value="変更する" /> */}
         </Box>
         {/* </form> */}
       </Box>
