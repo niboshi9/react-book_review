@@ -83,17 +83,7 @@ const Book = (props) => {
         }}
       />
       
-      <List
-        sx={{
-          // height: 146,   //146
-          // overflow: "hidden",
-          // display: "-webkit-box",
-          // WebkitBoxOrient: "vertical",
-          // WebkitLineClamp: 5,
-          
-        }}
-      >
-        
+      <List>
         {/* タイトル */}
         <ListItemText
           onClick={() => {
