@@ -60,6 +60,9 @@ export const TextArea = (props) => {
       
       margin="normal"
       fullWidth
+      
+      
+      type={props.type}
     />
   )
 }

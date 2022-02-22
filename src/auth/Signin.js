@@ -62,6 +62,7 @@ const Signin = () => {
           
           <TextArea
             value="passssswor"
+            type="password"
             id="password"
             label="パスワード"
             errorsName={errors.password}
